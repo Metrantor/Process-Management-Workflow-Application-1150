@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+/* Custom font for handwriting effect on sticky notes */
+.font-handwriting {
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  font-size: 0.9em;
+  line-height: 1.4;
+}
+
+/* Dark mode grid backgrounds */
+.dark .bg-gray-50 {
+  background-color: #111827;
+}
+
+.dark [style*="radial-gradient"] {
+  background-image: radial-gradient(circle, #4b5563 1px, transparent 1px) !important;
+}
+
+.dark [style*="linear-gradient"] {
+  background-image: 
+    linear-gradient(#4b5563 1px, transparent 1px),
+    linear-gradient(90deg, #4b5563 1px, transparent 1px) !important;
+}
+
+/* Smooth transitions for theme changes */
+* {
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+/* Zoom support for mouse wheel */
+.zoom-container {
+  transition: transform 0.2s ease;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: #1e293b;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #475569;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
