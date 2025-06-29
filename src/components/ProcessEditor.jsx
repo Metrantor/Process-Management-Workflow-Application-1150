@@ -12,7 +12,6 @@ const ProcessEditor = ({ process, position, onUpdate, onClose }) => {
     duration: process.duration,
     note: process.note || ''
   });
-  
   const editorRef = useRef(null);
 
   useEffect(() => {
@@ -47,15 +46,17 @@ const ProcessEditor = ({ process, position, onUpdate, onClose }) => {
     'External'
   ];
 
-  const formatDate = (dayNumber) => {
+  const formatDateWithWeekday = (dayNumber) => {
     const startDate = new Date(2025, 0, 1);
     const date = new Date(startDate);
     date.setDate(date.getDate() + dayNumber);
-    return date.toLocaleDateString('en-US', { 
+    const weekday = date.toLocaleDateString('en-US', { weekday: 'short' });
+    const dateStr = date.toLocaleDateString('en-US', { 
       month: 'short', 
       day: 'numeric', 
       year: 'numeric' 
     });
+    return `${weekday} ${dateStr}`;
   };
 
   return (
@@ -173,29 +174,29 @@ const ProcessEditor = ({ process, position, onUpdate, onClose }) => {
               <div className="bg-green-50 dark:bg-green-900/20 p-3 rounded-lg">
                 <div className="text-gray-500 dark:text-gray-400 text-xs">Early Start</div>
                 <div className="font-mono font-medium text-gray-800 dark:text-gray-200">
-                  {formatDate(process.earlyStart)}
+                  {formatDateWithWeekday(process.earlyStart)}
                 </div>
               </div>
               <div className="bg-green-50 dark:bg-green-900/20 p-3 rounded-lg">
                 <div className="text-gray-500 dark:text-gray-400 text-xs">Early Finish</div>
                 <div className="font-mono font-medium text-gray-800 dark:text-gray-200">
-                  {formatDate(process.earlyFinish)}
+                  {formatDateWithWeekday(process.earlyFinish)}
                 </div>
               </div>
               <div className="bg-orange-50 dark:bg-orange-900/20 p-3 rounded-lg">
                 <div className="text-gray-500 dark:text-gray-400 text-xs">Late Start</div>
                 <div className="font-mono font-medium text-gray-800 dark:text-gray-200">
-                  {formatDate(process.lateStart)}
+                  {formatDateWithWeekday(process.lateStart)}
                 </div>
               </div>
               <div className="bg-orange-50 dark:bg-orange-900/20 p-3 rounded-lg">
                 <div className="text-gray-500 dark:text-gray-400 text-xs">Late Finish</div>
                 <div className="font-mono font-medium text-gray-800 dark:text-gray-200">
-                  {formatDate(process.lateFinish)}
+                  {formatDateWithWeekday(process.lateFinish)}
                 </div>
               </div>
             </div>
-            
+
             <div className="grid grid-cols-2 gap-3 text-sm">
               <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg text-center">
                 <div className="text-gray-500 dark:text-gray-400 text-xs">Total Float</div>

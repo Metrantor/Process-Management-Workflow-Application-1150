@@ -5,63 +5,62 @@ import SafeIcon from '../common/SafeIcon';
 const { FiX } = FiIcons;
 
 const ConnectionLine = ({ from, to, connection, onDelete }) => {
-  // Calculate connection points with proper offset from objects
+  // Calculate connection points with proper offset OUTSIDE objects
   const getConnectionPoints = (fromProcess, toProcess, connectionType) => {
     const fromPort = connectionType?.fromType || 'finish';
     const toPort = connectionType?.toType || 'start';
     
     // Process dimensions
     const processWidth = 280;
-    const processHeight = 70;
     const milestoneSize = 48; // Half of 96px diamond
-    const connectionOffset = 8; // Distance from object edge
+    const connectionOffset = 12; // Distance OUTSIDE object edge
     
     let fromX, fromY, toX, toY;
     
-    // Calculate FROM point with offset
+    // Calculate FROM point OUTSIDE object
     if (fromProcess.type === 'milestone') {
       const centerX = fromProcess.x + milestoneSize;
       const centerY = fromProcess.y + milestoneSize;
       
       if (fromPort === 'start') {
-        fromX = centerX - 20 - connectionOffset; // Left side with offset
+        fromX = centerX - milestoneSize - connectionOffset; // LEFT outside diamond
         fromY = centerY;
       } else { // finish
-        fromX = centerX + 20 + connectionOffset; // Right side with offset
+        fromX = centerX + milestoneSize + connectionOffset; // RIGHT outside diamond
         fromY = centerY;
       }
     } else {
       const centerY = fromProcess.y + 15; // Header center
       
       if (fromPort === 'start') {
-        fromX = fromProcess.x - connectionOffset; // Left with offset
+        fromX = fromProcess.x - connectionOffset; // LEFT outside box
         fromY = centerY;
       } else { // finish
-        fromX = fromProcess.x + processWidth + connectionOffset; // Right with offset
+        fromX = fromProcess.x + processWidth + connectionOffset; // RIGHT outside box
         fromY = centerY;
       }
     }
     
-    // Calculate TO point with offset
+    // Calculate TO point OUTSIDE object
     if (toProcess.type === 'milestone') {
       const centerX = toProcess.x + milestoneSize;
       const centerY = toProcess.y + milestoneSize;
       
       if (toPort === 'start') {
-        toX = centerX - 20 - connectionOffset; // Left side with offset
+        toX = centerX - milestoneSize - connectionOffset; // LEFT outside diamond
         toY = centerY;
       } else { // finish
-        toX = centerX + 20 + connectionOffset; // Right side with offset
+        toX = centerX + milestoneSize + connectionOffset; // RIGHT outside diamond
         toY = centerY;
       }
     } else {
       const centerY = toProcess.y + 15; // Header center
       
       if (toPort === 'start') {
-        toX = toProcess.x - connectionOffset; // Left with offset
+        toX = toProcess.x - connectionOffset; // LEFT outside box
         toY = centerY;
       } else { // finish
-        toX = toProcess.x + processWidth + connectionOffset; // Right with offset
+        toX = toProcess.x + processWidth + connectionOffset; // RIGHT outside box
         toY = centerY;
       }
     }
@@ -94,6 +93,14 @@ const ConnectionLine = ({ from, to, connection, onDelete }) => {
   const pathData = `M ${fromX} ${fromY} C ${controlX1} ${controlY1}, ${controlX2} ${controlY2}, ${toX} ${toY}`;
   const midX = (fromX + toX) / 2;
   const midY = (fromY + toY) / 2;
+
+  // Calculate arrow direction
+  const angle = Math.atan2(toY - fromY, toX - fromX);
+  const arrowSize = 8;
+  const arrowX1 = toX - arrowSize * Math.cos(angle - Math.PI / 6);
+  const arrowY1 = toY - arrowSize * Math.sin(angle - Math.PI / 6);
+  const arrowX2 = toX - arrowSize * Math.cos(angle + Math.PI / 6);
+  const arrowY2 = toY - arrowSize * Math.sin(angle + Math.PI / 6);
 
   const isCritical = from.totalFloat === 0 && to.totalFloat === 0;
 
@@ -140,7 +147,7 @@ const ConnectionLine = ({ from, to, connection, onDelete }) => {
 
   return (
     <g className="connection-line group">
-      {/* Start circle with visible offset */}
+      {/* Start circle OUTSIDE object */}
       <circle
         cx={fromX}
         cy={fromY}
@@ -159,14 +166,10 @@ const ConnectionLine = ({ from, to, connection, onDelete }) => {
         className="hover:opacity-80 transition-opacity"
       />
       
-      {/* End circle with visible offset */}
-      <circle
-        cx={toX}
-        cy={toY}
-        r="3"
+      {/* Arrow head pointing to target */}
+      <polygon
+        points={`${toX},${toY} ${arrowX1},${arrowY1} ${arrowX2},${arrowY2}`}
         fill={isCritical ? "#dc2626" : connectionInfo.color}
-        stroke="white"
-        strokeWidth="1"
         className="drop-shadow-sm"
       />
       

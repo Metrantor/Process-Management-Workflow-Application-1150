@@ -78,15 +78,17 @@ const ProcessNode = ({
     onUpdateDuration(process.id, newDuration);
   };
 
-  const formatDate = (dayNumber) => {
+  const formatDateWithWeekday = (dayNumber) => {
     const startDate = new Date(2025, 0, 1);
     const date = new Date(startDate);
     date.setDate(date.getDate() + dayNumber);
-    return date.toLocaleDateString('en-US', { 
+    const weekday = date.toLocaleDateString('en-US', { weekday: 'short' });
+    const dateStr = date.toLocaleDateString('en-US', { 
       month: 'short', 
       day: 'numeric', 
       year: 'numeric' 
     });
+    return `${weekday} ${dateStr}`;
   };
 
   const truncateText = (text, maxLength = 14) => {
@@ -174,7 +176,7 @@ const ProcessNode = ({
         <div className="p-4 pb-8">
           <div className="text-center mb-3">
             <div className="text-sm text-gray-600 dark:text-gray-300 mb-1">
-              {formatDate(process.earlyStart)} - {formatDate(process.earlyFinish)}
+              {formatDateWithWeekday(process.earlyStart)} - {formatDateWithWeekday(process.earlyFinish)}
             </div>
             <div className="flex items-center justify-center gap-2">
               <button
@@ -215,7 +217,7 @@ const ProcessNode = ({
         >
           <SafeIcon icon={FiTrash2} className="w-4 h-4" />
         </button>
-        
+
         <button
           onClick={(e) => {
             e.stopPropagation();

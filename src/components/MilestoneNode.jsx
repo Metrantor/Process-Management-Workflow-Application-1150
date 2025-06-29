@@ -120,6 +120,47 @@ const MilestoneNode = ({
       onMouseDown={handleMouseDown}
     >
       <div className="relative">
+        {/* Connection Ports OUTSIDE diamond, at text level */}
+        {/* Left Connection Port (Eingang) - OUTSIDE left */}
+        <div 
+          className={`connection-port absolute w-5 h-5 rounded-full flex items-center justify-center cursor-pointer transition-all z-30 ${
+            connectionActive && isAvailableTarget 
+              ? 'bg-orange-400 hover:bg-orange-500 animate-pulse shadow-lg border-2 border-white' 
+              : connectionActive
+              ? 'bg-blue-400 hover:bg-blue-500 border-2 border-white'
+              : 'bg-blue-400 hover:bg-blue-500 border-2 border-white'
+          }`}
+          style={{
+            left: '-10px', // OUTSIDE diamond
+            top: '48px', // At milestone name level
+            transform: 'translateY(-50%)'
+          }}
+          onClick={(e) => handleMilestoneClick(e, 'start')}
+          title="Start Port (Eingang)"
+        >
+          <SafeIcon icon={FiLink} className="w-3 h-3 text-white" />
+        </div>
+        
+        {/* Right Connection Port (Ausgang) - OUTSIDE right */}
+        <div 
+          className={`connection-port absolute w-5 h-5 rounded-full flex items-center justify-center cursor-pointer transition-all z-30 ${
+            connectionActive && isAvailableTarget 
+              ? 'bg-orange-400 hover:bg-orange-500 animate-pulse shadow-lg border-2 border-white' 
+              : connectionActive
+              ? 'bg-green-400 hover:bg-green-500 border-2 border-white'
+              : 'bg-green-400 hover:bg-green-500 border-2 border-white'
+          }`}
+          style={{
+            right: '-10px', // OUTSIDE diamond
+            top: '48px', // At milestone name level
+            transform: 'translateY(-50%)'
+          }}
+          onClick={(e) => handleMilestoneClick(e, 'finish')}
+          title="Finish Port (Ausgang)"
+        >
+          <SafeIcon icon={FiLink} className="w-3 h-3 text-white" />
+        </div>
+
         {/* Diamond Shape */}
         <div 
           className={`
@@ -134,37 +175,6 @@ const MilestoneNode = ({
           onClick={(e) => handleMilestoneClick(e, 'milestone')}
           title={connectionActive ? "Click to connect" : "Milestone"}
         >
-          {/* Connection Ports - Horizontal alignment inside diamond */}
-          {/* Left Connection Port (Eingang) */}
-          <div 
-            className={`connection-port absolute left-4 top-1/2 transform -translate-y-1/2 w-4 h-4 rounded-full flex items-center justify-center cursor-pointer transition-all z-20 -rotate-45 ${
-              connectionActive && isAvailableTarget 
-                ? 'bg-orange-400 hover:bg-orange-500 animate-pulse shadow-lg border-2 border-white' 
-                : connectionActive
-                ? 'bg-blue-400 hover:bg-blue-500 border-2 border-white'
-                : 'bg-blue-400 hover:bg-blue-500 border-2 border-white'
-            }`}
-            onClick={(e) => handleMilestoneClick(e, 'start')}
-            title="Start Port (Eingang)"
-          >
-            <SafeIcon icon={FiLink} className="w-2 h-2 text-white" />
-          </div>
-          
-          {/* Right Connection Port (Ausgang) */}
-          <div 
-            className={`connection-port absolute right-4 top-1/2 transform -translate-y-1/2 w-4 h-4 rounded-full flex items-center justify-center cursor-pointer transition-all z-20 -rotate-45 ${
-              connectionActive && isAvailableTarget 
-                ? 'bg-orange-400 hover:bg-orange-500 animate-pulse shadow-lg border-2 border-white' 
-                : connectionActive
-                ? 'bg-green-400 hover:bg-green-500 border-2 border-white'
-                : 'bg-green-400 hover:bg-green-500 border-2 border-white'
-            }`}
-            onClick={(e) => handleMilestoneClick(e, 'finish')}
-            title="Finish Port (Ausgang)"
-          >
-            <SafeIcon icon={FiLink} className="w-2 h-2 text-white" />
-          </div>
-
           {/* Content Container (counter-rotated) */}
           <div className="absolute inset-2 -rotate-45 flex flex-col items-center justify-center text-white text-xs">
             <div className="flex items-center gap-1 mb-1">

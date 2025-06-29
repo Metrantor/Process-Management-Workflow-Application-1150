@@ -12,7 +12,6 @@ const MilestoneEditor = ({ milestone, position, onUpdate, onClose }) => {
     fixedDate: milestone.fixedDate || new Date().toISOString().split('T')[0],
     note: milestone.note || ''
   });
-  
   const editorRef = useRef(null);
 
   useEffect(() => {
@@ -39,15 +38,17 @@ const MilestoneEditor = ({ milestone, position, onUpdate, onClose }) => {
     handleSave();
   };
 
-  const formatDate = (dayNumber) => {
+  const formatDateWithWeekday = (dayNumber) => {
     const startDate = new Date(2025, 0, 1);
     const date = new Date(startDate);
     date.setDate(date.getDate() + dayNumber);
-    return date.toLocaleDateString('en-US', { 
+    const weekday = date.toLocaleDateString('en-US', { weekday: 'short' });
+    const dateStr = date.toLocaleDateString('en-US', { 
       month: 'short', 
       day: 'numeric', 
       year: 'numeric' 
     });
+    return `${weekday} ${dateStr}`;
   };
 
   return (
@@ -171,12 +172,17 @@ const MilestoneEditor = ({ milestone, position, onUpdate, onClose }) => {
                 </div>
                 <div className="font-mono font-medium text-gray-800 dark:text-gray-200">
                   {formData.isFixed && formData.fixedDate 
-                    ? new Date(formData.fixedDate).toLocaleDateString('en-US', { 
-                        month: 'short', 
-                        day: 'numeric', 
-                        year: 'numeric' 
-                      })
-                    : formatDate(milestone.earlyStart)
+                    ? (() => {
+                        const date = new Date(formData.fixedDate);
+                        const weekday = date.toLocaleDateString('en-US', { weekday: 'short' });
+                        const dateStr = date.toLocaleDateString('en-US', { 
+                          month: 'short', 
+                          day: 'numeric', 
+                          year: 'numeric' 
+                        });
+                        return `${weekday} ${dateStr}`;
+                      })()
+                    : formatDateWithWeekday(milestone.earlyStart)
                   }
                 </div>
               </div>
